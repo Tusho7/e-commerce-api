@@ -5,6 +5,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  totalUsers,
   updateUser,
   verifyUser,
 } from "../controllers/userController.js";
@@ -29,6 +30,8 @@ router.get("/verify", verifyUser);
 
 router.post("forgot_password", forgotPassword);
 
-router.get("/get_user", getUser)
+router.get("/get_user", getUser);
+
+router.get("/total_users", totalUsers);
 
 export default router;

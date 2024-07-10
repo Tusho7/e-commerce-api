@@ -297,3 +297,12 @@ export const getUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const totalUsers = async (req, res) => {
+    try {
+        const users = await prisma.users.findMany();
+        res.status(200).json({ users: users.length });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
