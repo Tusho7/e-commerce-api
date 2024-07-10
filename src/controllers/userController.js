@@ -11,7 +11,7 @@ const generateNewPssword = () => {
   return Math.random().toString(36).slice(-8);
 };
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { email, firstName, lastName, password } = req.body;
   const { file } = req;
 
@@ -57,4 +57,57 @@ const registerUser = async (req, res) => {
   }
 };
 
-export default registerUser;
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ error: "Please provide all required fields" });
+    }
+
+    const user = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (!user || !user.isVerified) {
+      return res
+        .status(401)
+        .json({ message: "User not found or not verified" });
+    }
+
+    if (user.isBlocked)
+      return res
+        .status(401)
+        .json({ message: "თქვენი მომხმარებელი დაბლოკილია." });
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { email: user.email, id: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 3600000,
+      sameSite: true,
+    });
+
+    res.status(200).json({ id: user.id });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
