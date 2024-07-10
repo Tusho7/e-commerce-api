@@ -2,6 +2,7 @@ import prisma from "../config/database.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import sendVerificationEmail from "../utils/email.js";
+import { registerUserSchema, loginUserSchema } from "../joi/validation.js";
 
 const generateUniqueCode = () => {
   return uuidv4();
@@ -16,10 +17,25 @@ export const registerUser = async (req, res) => {
   const { file } = req;
 
   try {
-    if (!email || !firstName || !lastName || !password) {
+    const { error } = registerUserSchema.validate(req.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      const errorMessages = new Set();
+      error.details.forEach((detail) => {
+        if (detail.context.key === "password") {
+          errorMessages.add(
+            "Password must be at least 8 characters long, contain at least one uppercase letter and one number"
+          );
+        } else if (detail.context.key === "email") {
+          errorMessages.add("Invalid email format");
+        } else {
+          errorMessages.add(detail.message);
+        }
+      });
       return res
         .status(400)
-        .json({ error: "Please provide all required fields" });
+        .json({ error: Array.from(errorMessages).join("; ") });
     }
 
     const userExists = await prisma.users.findUnique({
@@ -42,7 +58,6 @@ export const registerUser = async (req, res) => {
         firstName,
         password: hashedPassword,
         lastName,
-        password,
         profilePicture: "profilePictures/" + file.originalname,
       },
     });
@@ -61,10 +76,12 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Please provide all required fields" });
+    const { error } = loginUserSchema.validate(req.body, { abortEarly: false });
+    if (error) {
+      const errorMessages = error.details
+        .map((detail) => detail.message)
+        .join("; ");
+      return res.status(400).json({ error: errorMessages });
     }
 
     const user = await prisma.users.findUnique({
