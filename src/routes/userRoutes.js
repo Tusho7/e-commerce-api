@@ -1,5 +1,9 @@
 import express from "express";
-import { loginUser, registerUser } from "../controllers/userController.js";
+import {
+  loginUser,
+  logoutUser,
+  registerUser,
+} from "../controllers/userController.js";
 import multer from "multer";
 import { fileStorage, fileFilter } from "../utils/multer.js";
 
@@ -13,4 +17,5 @@ router.post(
 
 router.post("/login", loginUser);
 
+router.post("/logout", logoutUser);
 export default router;
