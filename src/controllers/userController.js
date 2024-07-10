@@ -270,12 +270,29 @@ export const forgotPassword = async (req, res) => {
       `Your new password is ${newPassword}`
     );
 
-    res
-      .status(200)
-      .json({
-        message:
-          "Password updated successfully, check your email for the new password.",
-      });
+    res.status(200).json({
+      message:
+        "Password updated successfully, check your email for the new password.",
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
