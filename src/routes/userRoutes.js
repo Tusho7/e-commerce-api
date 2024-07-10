@@ -5,6 +5,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  toggleBlockUser,
   totalUsers,
   updateUser,
   verifyUser,
@@ -33,5 +34,7 @@ router.post("forgot_password", forgotPassword);
 router.get("/get_user", getUser);
 
 router.get("/total_users", totalUsers);
+
+router.patch("/toggle_block_user/:id", toggleBlockUser);
 
 export default router;
