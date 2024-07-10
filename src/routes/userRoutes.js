@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteUserById,
   forgotPassword,
   getUser,
   loginUser,
@@ -36,5 +37,7 @@ router.get("/get_user", getUser);
 router.get("/total_users", totalUsers);
 
 router.patch("/toggle_block_user/:id", toggleBlockUser);
+
+router.delete("/delete_user/:id", deleteUserById);
 
 export default router;

@@ -299,39 +299,68 @@ export const getUser = async (req, res) => {
 };
 
 export const totalUsers = async (req, res) => {
-    try {
-        const users = await prisma.users.findMany();
-        res.status(200).json({ users: users.length });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}
+  try {
+    const users = await prisma.users.findMany();
+    res.status(200).json({ users: users.length });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 export const toggleBlockUser = async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const user = await prisma.users.findUnique({
-        where: {
-          id: parseInt(id),
-        },
-      });
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
+  const { id } = req.params;
 
-      const updatedUser = await prisma.users.update({
-        where: { id: parseInt(id) },
-        data: {
-          isBlocked: !user.isBlocked,
-        },
-      });
-  
-      const action = updatedUser.isBlocked ? "blocked" : "unblocked";
-      res.status(200).json({ message: `User ${action} successfully`, updatedUser });
-    } catch (error) {
-      console.error(`Error toggling user block status: ${error}`);
-      res.status(500).json({ message: "Server error" });
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  };
+
+    const updatedUser = await prisma.users.update({
+      where: { id: parseInt(id) },
+      data: {
+        isBlocked: !user.isBlocked,
+      },
+    });
+
+    const action = updatedUser.isBlocked ? "blocked" : "unblocked";
+    res
+      .status(200)
+      .json({ message: `User ${action} successfully`, updatedUser });
+  } catch (error) {
+    console.error(`Error toggling user block status: ${error}`);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const deleteUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await prisma.users.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(`Error deleting user: ${error}`);
+    res.status(500).json({ message: "Server error" });
+  }
+};
