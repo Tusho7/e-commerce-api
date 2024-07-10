@@ -1,10 +1,11 @@
 import express from "express";
 import {
+  forgotPassword,
   loginUser,
   logoutUser,
   registerUser,
   updateUser,
-  verifyUser
+  verifyUser,
 } from "../controllers/userController.js";
 import multer from "multer";
 import { fileStorage, fileFilter } from "../utils/multer.js";
@@ -24,5 +25,7 @@ router.post("/logout", logoutUser);
 router.put("/update_user", updateUser);
 
 router.get("/verify", verifyUser);
+
+router.post("forgot_password", forgotPassword);
 
 export default router;

@@ -1,7 +1,11 @@
 import prisma from "../config/database.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { sendVerificationEmail, updateUserEmail } from "../utils/email.js";
+import {
+  forgotPasswordEmail,
+  sendVerificationEmail,
+  updateUserEmail,
+} from "../utils/email.js";
 import { registerUserSchema, loginUserSchema } from "../joi/validation.js";
 
 const generateUniqueCode = () => {
@@ -229,6 +233,49 @@ export const verifyUser = async (req, res) => {
     });
 
     res.status(200).json({ message: "User verified successfully" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const newPassword = generateNewPssword();
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.users.update({
+      where: {
+        email,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    await forgotPasswordEmail(
+      email,
+      "Paswword reset",
+      `Your new password is ${newPassword}`
+    );
+
+    res
+      .status(200)
+      .json({
+        message:
+          "Password updated successfully, check your email for the new password.",
+      });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
