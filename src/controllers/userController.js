@@ -1,7 +1,7 @@
 import prisma from "../config/database.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import sendVerificationEmail from "../utils/email.js";
+import { sendVerificationEmail, updateUserEmail } from "../utils/email.js";
 import { registerUserSchema, loginUserSchema } from "../joi/validation.js";
 
 const generateUniqueCode = () => {
@@ -141,5 +141,61 @@ export const logoutUser = async (req, res) => {
   } catch (error) {
     console.error("Error logging out user:", error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName, email, password } = req.body;
+
+  try {
+    const user = await prisma.users.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const updates = {};
+
+    if (email && email !== user.email) {
+      const verificationCode = generateUniqueCode();
+      await updateUserEmail(email, verificationCode);
+
+      updates.email = email;
+      updates.verificationCode = verificationCode;
+      updates.isVerified = false;
+    } else if (email && email !== user.email && user.isVerified) {
+      updates.email = email;
+    }
+
+    if (firstName) {
+      updates.firstName = first_name;
+    }
+
+    if (lastName) {
+      updates.lastName = last_name;
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updates.password = hashedPassword;
+    }
+
+    const updatedUser = await prisma.users.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: updates,
+    });
+
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };

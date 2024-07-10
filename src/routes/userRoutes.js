@@ -3,6 +3,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateUser,
 } from "../controllers/userController.js";
 import multer from "multer";
 import { fileStorage, fileFilter } from "../utils/multer.js";
@@ -18,4 +19,7 @@ router.post(
 router.post("/login", loginUser);
 
 router.post("/logout", logoutUser);
+
+router.put("/update_user", updateUser);
+
 export default router;
