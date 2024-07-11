@@ -1,15 +1,6 @@
 import express from "express";
 import {
-  deleteUserById,
-  forgotPassword,
-  getUser,
-  loginUser,
-  logoutUser,
-  registerUser,
-  toggleBlockUser,
-  totalUsers,
-  updateUser,
-  verifyUser,
+  * as userController
 } from "../controllers/userController.js";
 import multer from "multer";
 import { fileStorage, fileFilter } from "../utils/multer.js";
@@ -22,22 +13,22 @@ router.post(
   registerUser
 );
 
-router.post("/login", loginUser);
+router.post("/login", userController.loginUser);
 
-router.post("/logout", logoutUser);
+router.post("/logout", userController.logoutUser);
 
-router.put("/update_user", updateUser);
+router.put("/update_user", userController.updateUser);
 
-router.get("/verify", verifyUser);
+router.get("/verify", userController.verifyUser);
 
-router.post("forgot_password", forgotPassword);
+router.post("forgot_password", userController.forgotPassword);
 
-router.get("/get_user", getUser);
+router.get("/get_user", userController.getUser);
 
-router.get("/total_users", totalUsers);
+router.get("/total_users", userController.totalUsers);
 
-router.patch("/toggle_block_user/:id", toggleBlockUser);
+router.patch("/toggle_block_user/:id", userController.toggleBlockUser);
 
-router.delete("/delete_user/:id", deleteUserById);
+router.delete("/delete_user/:id", userController.deleteUserById);
 
 export default router;
