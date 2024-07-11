@@ -7,17 +7,63 @@ generator client {
     provider = "prisma-client-js"
 }
 
-model Users {
-    id               Int     @id @default(autoincrement())
-    email            String  @unique
+model User {
+    id               Int        @id @default(autoincrement())
+    email            String     @unique
     firstName        String?
     lastName         String?
     password         String
     profilePicture   String?
     verificationCode String?
-    isVerified       Boolean @default(false)
-    isBlocked        Boolean @default(false)
+    isVerified       Boolean    @default(false)
+    isBlocked        Boolean    @default(false)
+    wishlist         Wishlist[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@map("users")
+}
+
+model Category {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    products Product[]
+
+    @@map("categories")
+}
+
+model Product {
+    id          Int        @id @default(autoincrement())
+    name        String
+    description String?
+    price       Float
+    images      String
+    stock       Int
+    colors      String
+    sizes       String
+    shipping    String
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    categoryId  Int
+    category    Category   @relation(fields: [categoryId], references: [id])
+    wishlist    Wishlist[]
+
+    @@map("products")
+}
+
+model Wishlist {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    productId Int
+    user      User     @relation(fields: [userId], references: [id])
+    product   Product  @relation(fields: [productId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, productId])
+    @@map("wishlists")
 }

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import prisma from "./config/database.js";
 import userRoutes from "./routes/userRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import { configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 app.use("/api/auth", userRoutes);
+app.use("/", categoryRoutes);
 
 const PORT = process.env.PORT || 3000;
 
