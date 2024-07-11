@@ -36,3 +36,23 @@ export const addToCart = async (req, res) => {
     res.status(500).json({ error: "Unable to add to cart" });
   }
 };
+
+export const getUserCart = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const cartItems = await prisma.cart.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    res.status(200).json(cartItems);
+  } catch (error) {
+    console.error("Error getting cart items:", error);
+    res.status(500).json({ error: "Unable to get cart items" });
+  }
+};
