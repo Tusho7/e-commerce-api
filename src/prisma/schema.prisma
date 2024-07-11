@@ -18,6 +18,7 @@ model User {
     isVerified       Boolean    @default(false)
     isBlocked        Boolean    @default(false)
     wishlist         Wishlist[]
+    cart             Cart[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -51,6 +52,7 @@ model Product {
     categoryId  Int
     category    Category   @relation(fields: [categoryId], references: [id])
     wishlist    Wishlist[]
+    cart        Cart[]
 
     @@map("products")
 }
@@ -66,4 +68,17 @@ model Wishlist {
 
     @@unique([userId, productId])
     @@map("wishlists")
+}
+
+model Cart {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id])
+    productId Int
+    product   Product  @relation(fields: [productId], references: [id])
+    quantity  Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("carts")
 }
