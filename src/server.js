@@ -4,6 +4,7 @@ import prisma from "./config/database.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import wishlistRoutes from "./routes/wishlistRoutes.js";
 import { configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -26,6 +27,7 @@ app.use(express.static("public"));
 app.use("/api/auth", userRoutes);
 app.use("/", categoryRoutes);
 app.use("/", productRoutes);
+app.use("/", wishlistRoutes);
 
 const PORT = process.env.PORT || 3000;
 
