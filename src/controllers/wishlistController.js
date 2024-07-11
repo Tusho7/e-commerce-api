@@ -50,3 +50,34 @@ export const getWishlist = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const deleteWishlist = async (req, res) => {
+  const { userId, productId } = req.body;
+
+  try {
+    const wishlistEntry = await prisma.wishlist.findUnique({
+      where: {
+        userId_productId: {
+          userId: parseInt(userId),
+          productId: parseInt(productId),
+        },
+      },
+    });
+
+    if (!wishlistEntry) {
+      return res
+        .status(400)
+        .json({ message: "პროდუქტი არ მოიძებნა სურვილების სიაში" });
+    }
+
+    await prisma.wishlist.delete({
+      where: {
+        id: wishlistEntry.id,
+      },
+    });
+
+    res.status(200).json({ message: "პროდუქტი წაიშალა სურვილების სიიდან." });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
