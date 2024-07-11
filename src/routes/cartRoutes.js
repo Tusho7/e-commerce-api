@@ -4,6 +4,6 @@ import * as cartController from "../controllers/cartController.js";
 
 const router = express.Router();
 
-router.post("/add_to_cart", cartController.createCart);
+router.post("/add_to_cart", cartController.addToCart);
 
 export default router;

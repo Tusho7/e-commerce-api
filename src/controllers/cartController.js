@@ -1,4 +1,4 @@
-import prisma from "../config/database";
+import prisma from "../config/database.js";
 
 export const addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
