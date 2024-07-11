@@ -42,7 +42,7 @@ export const registerUser = async (req, res) => {
         .json({ error: Array.from(errorMessages).join("; ") });
     }
 
-    const userExists = await prisma.users.findUnique({
+    const userExists = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -56,7 +56,7 @@ export const registerUser = async (req, res) => {
 
     const verificationCode = generateUniqueCode();
 
-    const newUser = await prisma.users.create({
+    const newUser = await prisma.user.create({
       data: {
         email,
         firstName,
@@ -88,7 +88,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ error: errorMessages });
     }
 
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -153,7 +153,7 @@ export const updateUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id),
       },
@@ -189,7 +189,7 @@ export const updateUser = async (req, res) => {
       updates.password = hashedPassword;
     }
 
-    const updatedUser = await prisma.users.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: parseInt(id),
       },
@@ -208,7 +208,7 @@ export const verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -222,7 +222,7 @@ export const verifyUser = async (req, res) => {
       return res.status(400).json({ error: "Invalid verification code" });
     }
 
-    await prisma.users.update({
+    await prisma.user.update({
       where: {
         email,
       },
@@ -242,7 +242,7 @@ export const forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -255,7 +255,7 @@ export const forgotPassword = async (req, res) => {
     const newPassword = generateNewPssword();
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await prisma.users.update({
+    await prisma.user.update({
       where: {
         email,
       },
@@ -282,7 +282,7 @@ export const forgotPassword = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const userId = req.user?.id;
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -300,7 +300,7 @@ export const getUser = async (req, res) => {
 
 export const totalUsers = async (req, res) => {
   try {
-    const users = await prisma.users.findMany();
+    const users = await prisma.user.findMany();
     res.status(200).json({ users: users.length });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -311,7 +311,7 @@ export const toggleBlockUser = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id),
       },
@@ -321,7 +321,7 @@ export const toggleBlockUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const updatedUser = await prisma.users.update({
+    const updatedUser = await prisma.user.update({
       where: { id: parseInt(id) },
       data: {
         isBlocked: !user.isBlocked,
@@ -342,7 +342,7 @@ export const deleteUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: parseInt(id),
       },
@@ -352,7 +352,7 @@ export const deleteUserById = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    await prisma.users.delete({
+    await prisma.user.delete({
       where: {
         id: parseInt(id),
       },
