@@ -52,7 +52,7 @@ export const getWishlist = async (req, res) => {
 };
 
 export const deleteWishlist = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { userId, productId } = req.params;
 
   try {
     const wishlistEntry = await prisma.wishlist.findUnique({
