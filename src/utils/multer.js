@@ -9,6 +9,15 @@ export const fileStorage = multer.diskStorage({
   },
 });
 
+export const fileStorageForProduct = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/productImages");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
 export const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/png" ||
