@@ -2,6 +2,7 @@ import express from "express";
 import * as userController from "../controllers/userController.js";
 import multer from "multer";
 import { fileStorage, fileFilter } from "../utils/multer.js";
+import { middleware } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.get("/verify", userController.verifyUser);
 
 router.post("forgot_password", userController.forgotPassword);
 
-router.get("/get_user", userController.getUser);
+router.get("/get_user", middleware, userController.getUser);
 
 router.get("/total_users", userController.totalUsers);
 
