@@ -31,3 +31,22 @@ export const createWishlist = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getWishlist = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const wishlist = await prisma.wishlist.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    res.status(200).json({ wishlist });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
