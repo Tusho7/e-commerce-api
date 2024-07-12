@@ -7,7 +7,7 @@ const router = express.Router();
 
 const upload = multer({
   storage: fileStorageForProduct,
-  fileFilter: fileFilter,
+  fileFilter,
 }).array("products", 50);
 
 router.post("/create_product", upload, productController.createProduct);

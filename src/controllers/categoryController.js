@@ -20,7 +20,7 @@ export const getCategories = async (req, res) => {
   try {
     const categories = await prisma.category.findMany();
 
-    res.status(200).json({ categories });
+    res.status(200).json(categories);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

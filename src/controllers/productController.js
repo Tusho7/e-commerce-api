@@ -8,13 +8,18 @@ export const createProduct = async (req, res) => {
     stock,
     colors,
     sizes,
+    isOnSale,
+    salePercentage,
     shipping,
     categoryId,
   } = req.body;
 
-  const { files } = req.files;
-
+  const { files } = req;
   const images = files.map((file) => "productImages/" + file.originalname);
+
+  if (isOnSale && !salePercentage) {
+    return res.status(400).json({ message: "მიუთითეთ ფასდაკლების პროცენტი." });
+  }
 
   try {
     const product = await prisma.product.create({
@@ -22,15 +27,18 @@ export const createProduct = async (req, res) => {
         name,
         description,
         price,
-        images,
-        stock,
+        images: { set: images },
+        stock: parseInt(stock),
         colors,
         sizes,
         shipping,
+        isOnSale,
+        salePercentage: isOnSale ? parseInt(salePercentage) : null,
         categoryId: parseInt(categoryId),
       },
     });
 
+    console.log(product);
     res.status(201).json({ product });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -41,7 +49,7 @@ export const getProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany();
 
-    res.status(200).json({ products });
+    res.status(200).json(products);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
