@@ -38,21 +38,23 @@ model Category {
 }
 
 model Product {
-    id          Int        @id @default(autoincrement())
-    name        String
-    description String?
-    price       Float
-    images      String
-    stock       Int
-    colors      String
-    sizes       String
-    shipping    String
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
-    categoryId  Int
-    category    Category   @relation(fields: [categoryId], references: [id])
-    wishlist    Wishlist[]
-    cart        Cart[]
+    id             Int        @id @default(autoincrement())
+    name           String
+    description    String?
+    price          Float
+    images         String
+    stock          Int
+    colors         String
+    sizes          String
+    shipping       String
+    isOnSale       Boolean    @default(false)
+    salePercentage Int?       @default(0)
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
+    categoryId     Int
+    category       Category   @relation(fields: [categoryId], references: [id])
+    wishlist       Wishlist[]
+    cart           Cart[]
 
     @@map("products")
 }
