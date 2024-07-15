@@ -12,7 +12,6 @@ export const createWishlist = async (req, res) => {
         },
       },
     });
-
     if (existingWishlistEntry) {
       return res
         .status(400)
@@ -52,7 +51,7 @@ export const getWishlist = async (req, res) => {
 };
 
 export const deleteWishlist = async (req, res) => {
-  const { userId, productId } = req.params;
+  const { userId, productId } = req.body;
 
   try {
     const wishlistEntry = await prisma.wishlist.findUnique({

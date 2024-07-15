@@ -46,7 +46,11 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: {
+        wishlist: true,
+      },
+    });
 
     res.status(200).json(products);
   } catch (error) {
