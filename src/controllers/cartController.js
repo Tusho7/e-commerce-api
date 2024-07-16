@@ -1,10 +1,10 @@
 import prisma from "../config/database.js";
 
 export const addToCart = async (req, res) => {
-  const { userId, productId, quantity, colors } = req.body;
+  const { userId, productId, quantity, colors, sizes } = req.body;
 
   try {
-    if (!productId || !quantity || !colors) {
+    if (!productId || !quantity || !colors || !sizes) {
       return res
         .status(400)
         .json({ error: "productId and quantity are required" });
@@ -14,6 +14,7 @@ export const addToCart = async (req, res) => {
       data: {
         quantity: parseInt(quantity),
         colors,
+        sizes,
         product: {
           connect: {
             id: parseInt(productId),
