@@ -10,6 +10,15 @@ export const addToCart = async (req, res) => {
         .json({ error: "productId and quantity are required" });
     }
 
+    const wishlistEntry = await prisma.wishlist.findUnique({
+      where: {
+        userId_productId: {
+          userId: parseInt(userId),
+          productId: parseInt(productId),
+        },
+      },
+    });
+
     const cartItem = await prisma.cart.create({
       data: {
         quantity: parseInt(quantity),
@@ -25,6 +34,13 @@ export const addToCart = async (req, res) => {
             id: parseInt(userId),
           },
         },
+        Wishlist: wishlistEntry
+          ? {
+              connect: {
+                id: wishlistEntry.id,
+              },
+            }
+          : undefined,
       },
       include: {
         product: true,

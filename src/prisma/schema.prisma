@@ -67,22 +67,25 @@ model Wishlist {
     product   Product  @relation(fields: [productId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    Cart      Cart[]
 
     @@unique([userId, productId])
     @@map("wishlists")
 }
 
 model Cart {
-    id        Int      @id @default(autoincrement())
-    userId    Int
-    user      User     @relation(fields: [userId], references: [id])
-    productId Int
-    product   Product  @relation(fields: [productId], references: [id])
-    colors    String
-    sizes     String
-    quantity  Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id         Int       @id @default(autoincrement())
+    userId     Int
+    user       User      @relation(fields: [userId], references: [id])
+    productId  Int
+    product    Product   @relation(fields: [productId], references: [id])
+    colors     String
+    sizes      String
+    quantity   Int
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    Wishlist   Wishlist? @relation(fields: [wishlistId], references: [id])
+    wishlistId Int?
 
     @@map("carts")
 }

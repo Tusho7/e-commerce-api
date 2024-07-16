@@ -41,6 +41,7 @@ export const getWishlist = async (req, res) => {
       },
       include: {
         product: true,
+        Cart: true,
       },
     });
 
