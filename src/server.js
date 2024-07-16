@@ -7,6 +7,7 @@ import productRoutes from "./routes/productRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import faqRoutes from "./routes/faqRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import { configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -32,6 +33,7 @@ app.use("/", productRoutes);
 app.use("/", wishlistRoutes);
 app.use("/", cartRoutes);
 app.use("/", faqRoutes);
+app.use("/", contactRoutes);
 
 const PORT = process.env.PORT || 3000;
 
