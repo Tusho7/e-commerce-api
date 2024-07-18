@@ -56,6 +56,7 @@ model Product {
     category       Category   @relation(fields: [categoryId], references: [id])
     wishlist       Wishlist[]
     cart           Cart[]
+    topModel       TopModel[]
 
     @@map("products")
 }
@@ -119,4 +120,16 @@ model Testimonial {
     user   User @relation(fields: [userId], references: [id])
 
     @@map("testimonials")
+}
+
+model TopModel {
+    id        Int     @id @default(autoincrement())
+    productId Int
+    product   Product @relation(fields: [productId], references: [id])
+    count     Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("top_models")
 }

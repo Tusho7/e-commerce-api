@@ -9,6 +9,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import faqRoutes from "./routes/faqRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import testimonialRoutes from "./routes/testimonialRoutes.js";
+import topModelsRoutes from "./routes/topModelsRoutes.js";
 import { configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -36,6 +37,7 @@ app.use("/", cartRoutes);
 app.use("/", faqRoutes);
 app.use("/", contactRoutes);
 app.use("/", testimonialRoutes);
+app.use("/", topModelsRoutes);
 
 const PORT = process.env.PORT || 3000;
 
