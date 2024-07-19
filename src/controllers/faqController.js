@@ -1,6 +1,6 @@
-import prisma from "@prisma/client";
+import prisma from "../config/database.js";
 
-export const createFaq = async () => {
+export const createFaq = async (req, res) => {
   const { question, answer } = req.body;
 
   if (!question || !answer) {
@@ -17,7 +17,7 @@ export const createFaq = async () => {
       },
     });
 
-    resizeBy.status(201).json(newFaq);
+    res.status(200).json({ message: "FAQ created successfully.", newFaq });
   } catch (error) {
     console.error("Failed to create FAQ:", error);
     resizeBy.status(500).json({ message: "Failed to create FAQ." });
@@ -81,13 +81,11 @@ export const editFaqById = async () => {
   }
 };
 
-export const getFaqs = async () => {
+export const getFaqs = async (req, res) => {
   try {
     const faqs = await prisma.faq.findMany();
-
     res.status(200).json(faqs);
   } catch (error) {
-    console.error("Error fetching FAQs:", error);
-    res.status(500).json({ error: "Unable to fetch FAQs." });
+    res.status(400).json({ error: error.message });
   }
 };

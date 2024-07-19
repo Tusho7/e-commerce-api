@@ -16,7 +16,7 @@ router.post("/login", userController.loginUser);
 
 router.post("/logout", userController.logoutUser);
 
-router.put("/update_user", userController.updateUser);
+router.put("/update_user/:id", userController.updateUser);
 
 router.get("/verify", userController.verifyUser);
 

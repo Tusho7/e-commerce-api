@@ -133,3 +133,13 @@ model TopModel {
 
     @@map("top_models")
 }
+
+model AboutUs {
+    id        Int      @id @default(autoincrement())
+    title     String
+    content   Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("about_us")
+}

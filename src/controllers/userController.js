@@ -179,11 +179,11 @@ export const updateUser = async (req, res) => {
     }
 
     if (firstName) {
-      updates.firstName = first_name;
+      updates.firstName = firstName;
     }
 
     if (lastName) {
-      updates.lastName = last_name;
+      updates.lastName = lastName;
     }
 
     if (password) {
