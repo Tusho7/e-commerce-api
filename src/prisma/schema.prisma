@@ -143,3 +143,13 @@ model AboutUs {
 
     @@map("about_us")
 }
+
+model Contact {
+    id        Int      @id @default(autoincrement())
+    email     String
+    phone     Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("contacts")
+}
