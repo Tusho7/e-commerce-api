@@ -183,3 +183,15 @@ model TermsAndConditions {
 
     @@map("terms_and_conditions")
 }
+
+model Admin {
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    email     String   @unique
+    password  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("admins")
+}
