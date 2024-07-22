@@ -12,6 +12,7 @@ import testimonialRoutes from "./routes/testimonialRoutes.js";
 import topModelsRoutes from "./routes/topModelsRoutes.js";
 import aboutUsRoutes from "./routes/aboutUsRoutes.js";
 import careerRoutes from "./routes/careerRoutes.js";
+import privacyPolicyRoutes from "./routes/privacyPolicyRoutes.js";
 import { configDotenv } from "dotenv";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -42,6 +43,7 @@ app.use("/", testimonialRoutes);
 app.use("/", topModelsRoutes);
 app.use("/", aboutUsRoutes);
 app.use("/", careerRoutes);
+app.use("/", privacyPolicyRoutes);
 
 const PORT = process.env.PORT || 3000;
 
