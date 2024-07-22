@@ -173,3 +173,13 @@ model PrivacyPolicy {
 
     @@map("privacy_policies")
 }
+
+model TermsAndConditions {
+    id        Int      @id @default(autoincrement())
+    title     String
+    content   Json
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("terms_and_conditions")
+}
