@@ -175,3 +175,54 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateUserById = async (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName, email, password, isVerified } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const updates = {};
+
+    if (firstName !== undefined) {
+      updates.firstName = firstName;
+    }
+
+    if (lastName !== undefined) {
+      updates.lastName = lastName;
+    }
+
+    if (email !== undefined) {
+      updates.email = email;
+    }
+
+    if (password !== undefined) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updates.password = hashedPassword;
+    }
+
+    if (isVerified !== undefined) {
+      updates.isVerified = isVerified;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: updates,
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
