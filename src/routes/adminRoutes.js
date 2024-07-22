@@ -2,6 +2,7 @@ import express from "express";
 import {
   createAdmin,
   getAdmin,
+  getAllUsers,
   loginAdmin,
   logoutAdmin,
   updateAdmin,
@@ -16,5 +17,6 @@ router.post("/logout_admin", logoutAdmin);
 
 router.get("/get_admin", adminMiddleware, getAdmin);
 router.put("/update_admin", updateAdmin);
+router.get("/get_all_users", getAllUsers);
 
 export default router;
