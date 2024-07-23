@@ -91,11 +91,9 @@ export const updateProduct = async (req, res) => {
     sizes,
     shipping,
     categoryId,
+    isOnSale,
+    salePercentage,
   } = req.body;
-
-  const { files } = req.files;
-
-  const images = files.map((file) => "productImages/" + file.originalname);
 
   try {
     const product = await prisma.product.update({
@@ -106,11 +104,12 @@ export const updateProduct = async (req, res) => {
         name,
         description,
         price,
-        images,
         stock,
         colors,
         sizes,
         shipping,
+        isOnSale,
+        salePercentage: isOnSale ? parseInt(salePercentage) : null,
         categoryId: parseInt(categoryId),
       },
     });
@@ -125,9 +124,14 @@ export const deleteProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const productId = parseInt(id);
+
     const product = await prisma.product.findUnique({
-      where: {
-        id: parseInt(id),
+      where: { id: productId },
+      include: {
+        wishlist: true,
+        cart: true,
+        topModel: true,
       },
     });
 
@@ -135,10 +139,20 @@ export const deleteProductById = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    await prisma.wishlist.deleteMany({
+      where: { productId: productId },
+    });
+
+    await prisma.cart.deleteMany({
+      where: { productId: productId },
+    });
+
+    await prisma.topModel.deleteMany({
+      where: { productId: productId },
+    });
+
     await prisma.product.delete({
-      where: {
-        id: parseInt(id),
-      },
+      where: { id: productId },
     });
 
     res.status(200).json({ message: "Product deleted successfully" });
