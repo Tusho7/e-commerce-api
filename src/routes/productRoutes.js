@@ -10,7 +10,12 @@ const upload = multer({
   fileFilter,
 }).array("products", 50);
 
-router.post("/create_product", upload, productController.createProduct);
+const uploadSingle = multer({
+  storage: fileStorageForProduct,
+  fileFilter,
+}).single("products");
+
+router.post("/create_product", uploadSingle, productController.createProduct);
 router.get("/products", productController.getProducts);
 router.get("/product/:id", productController.getProductById);
 router.get("/products/:categoryId", productController.getProductsByCategory);

@@ -14,27 +14,46 @@ export const createProduct = async (req, res) => {
     categoryId,
   } = req.body;
 
-  const { files } = req;
-  const images = files.map((file) => "productImages/" + file.originalname);
+  const { file } = req;
 
-  if (isOnSale && !salePercentage) {
+  if (
+    !name ||
+    !description ||
+    !price ||
+    !stock ||
+    !colors ||
+    !sizes ||
+    !shipping ||
+    !categoryId ||
+    !file
+  ) {
+    return res.status(400).json({ message: "შეავსეთ ყველა ველი." });
+  }
+  const isOnSaleBoolean = isOnSale === "true";
+
+  if (isOnSaleBoolean && !salePercentage) {
     return res.status(400).json({ message: "მიუთითეთ ფასდაკლების პროცენტი." });
   }
 
   try {
+    const images = {
+      set: [`productImages/${file.originalname}`],
+    };
     const product = await prisma.product.create({
       data: {
         name,
         description,
         price,
-        images: { set: images },
+        images: images,
         stock: parseInt(stock),
         colors,
         sizes,
         shipping,
-        isOnSale,
-        salePercentage: isOnSale ? parseInt(salePercentage) : null,
-        categoryId: parseInt(categoryId),
+        isOnSale: isOnSaleBoolean,
+        salePercentage: isOnSaleBoolean ? parseInt(salePercentage) : null,
+        category: {
+          connect: { id: parseInt(categoryId) },
+        },
       },
     });
 
@@ -96,6 +115,14 @@ export const updateProduct = async (req, res) => {
   } = req.body;
 
   try {
+    const isOnSaleBoolean = isOnSale === "true";
+
+    if (isOnSaleBoolean && !salePercentage) {
+      return res
+        .status(400)
+        .json({ message: "მიუთითეთ ფასდაკლების პროცენტი." });
+    }
+
     const product = await prisma.product.update({
       where: {
         id: parseInt(id),
@@ -108,8 +135,8 @@ export const updateProduct = async (req, res) => {
         colors,
         sizes,
         shipping,
-        isOnSale,
-        salePercentage: isOnSale ? parseInt(salePercentage) : null,
+        isOnSale: isOnSaleBoolean,
+        salePercentage: isOnSaleBoolean ? parseInt(salePercentage) : null,
         categoryId: parseInt(categoryId),
       },
     });
