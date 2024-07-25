@@ -2,6 +2,7 @@ import express from "express";
 import {
   contactAdmin,
   createContact,
+  deleteContactById,
   deleteMessageById,
   editContactById,
   getContacts,
@@ -18,8 +19,10 @@ router.delete("/delete_message/:id", deleteMessageById);
 
 router.post("/create_contact_us", createContact);
 
-router.post("/edit_contact_us/:id", editContactById);
+router.put("/edit_contact_us/:id", editContactById);
 
 router.get("/get_contact_us", getContacts);
+
+router.delete("/delete_contact/:id", deleteContactById);
 
 export default router;
