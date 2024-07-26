@@ -54,7 +54,6 @@ export const deleteCategoryById = async (req, res) => {
 
 export const updateCategoryName = async (req, res) => {
   const { id } = req.params;
-
   const { name } = req.body;
 
   try {
@@ -66,7 +65,9 @@ export const updateCategoryName = async (req, res) => {
         name,
       },
     });
-    return res.status(200).json({ updateCategory });
+    return res
+      .status(200)
+      .json({ message: "Category updated successfully", updateCategory });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
