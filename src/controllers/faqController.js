@@ -24,7 +24,7 @@ export const createFaq = async (req, res) => {
   }
 };
 
-export const deleteFaqById = async () => {
+export const deleteFaqById = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -47,7 +47,7 @@ export const deleteFaqById = async () => {
   }
 };
 
-export const editFaqById = async () => {
+export const editFaqById = async (req, res) => {
   const { id } = req.params;
   const { question, answer } = req.body;
 
