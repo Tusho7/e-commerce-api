@@ -7,14 +7,14 @@ export const createTestimonial = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  await prisma.testimonial.create({
+  const newTestimonial = await prisma.testimonial.create({
     data: {
       quote,
       userId,
     },
   });
 
-  res.status(200).json({ message: "Testimonial created" });
+  res.status(200).json({ message: "Testimonial created", newTestimonial });
 };
 
 export const getTestimonials = async (req, res) => {
