@@ -75,7 +75,11 @@ export const getUserCart = async (req, res) => {
 };
 
 export const removeFromCart = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { userId, productId } = req.params;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ message: "Invalid request data" });
+  }
 
   try {
     const cartItem = await prisma.cart.findFirst({
