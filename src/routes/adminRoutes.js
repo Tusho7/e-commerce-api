@@ -1,7 +1,9 @@
 import express from "express";
 import {
   createAdmin,
+  deleteAdminById,
   getAdmin,
+  getAdmins,
   getAllUsers,
   loginAdmin,
   logoutAdmin,
@@ -19,6 +21,8 @@ router.post("/logout_admin", logoutAdmin);
 router.get("/get_admin", adminMiddleware, getAdmin);
 router.put("/update_admin", updateAdmin);
 router.get("/get_all_users", getAllUsers);
+router.get("/get_all_admins", getAdmins);
+router.delete("/delete_admin/:id", deleteAdminById);
 
 router.put("/update_user/:id", updateUserById);
 
