@@ -130,7 +130,7 @@ export const getAdmin = async (req, res) => {
 
 export const updateAdmin = async (req, res) => {
   const { id } = req.params;
-  const { email, password } = req.body;
+  const { email, password, firstName, lastName } = req.body;
 
   try {
     const admin = await prisma.admin.findUnique({
@@ -152,6 +152,14 @@ export const updateAdmin = async (req, res) => {
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       updates.password = hashedPassword;
+    }
+
+    if (firstName) {
+      updates.firstName = firstName;
+    }
+
+    if (lastName) {
+      updates.lastName = lastName;
     }
 
     const updatedAdmin = await prisma.admin.update({

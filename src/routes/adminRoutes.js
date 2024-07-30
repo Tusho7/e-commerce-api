@@ -19,7 +19,7 @@ router.post("/login_admin", loginAdmin);
 router.post("/logout_admin", logoutAdmin);
 
 router.get("/get_admin", adminMiddleware, getAdmin);
-router.put("/update_admin", updateAdmin);
+router.put("/update_admin/:id", updateAdmin);
 router.get("/get_all_users", getAllUsers);
 router.get("/get_all_admins", getAdmins);
 router.delete("/delete_admin/:id", deleteAdminById);
