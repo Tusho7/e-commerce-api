@@ -24,8 +24,8 @@
 - <img src="./readme/dotenv.png" width="25" style="top: 8px" /> dotenv @ 16.4.5 - Zero-dependency module for loading environment variables.
 - <img src="./readme/express.png" width="25" style="top: 8px" /> express @ 4.19.2 - Web framework for Node.js.
 - <img src="./readme/prisma.png" width="25" style="top: 8px" /> Prisma @ 5.16.2 - Next-generation ORM for Node.js and TypeScript.
-- <img src="./readme/mysql.png" width="25" style="top: 8px" /> MySQL @ 2.18.1 - MySQL client for Node.js.
-- <img src="./readme/joi.png" width="25" style="top: 8px" /> Joi @ 17.13.3 - Data validation library for JavaScript.
+- <img src="./readme/MySql.png" width="25" style="top: 8px" /> MySQL @ 2.18.1 - MySQL client for Node.js.
+- <img src="./readme/Joi.png" width="25" style="top: 8px" /> Joi @ 17.13.3 - Data validation library for JavaScript.
 - <img src="./readme/nodemailer.webp" width="25" style="top: 8px" /> nodemailer @ 6.9.14 - Module for sending emails.
 - <img src="./readme/uuid.png" width="25" style="top: 8px" /> uuid @ 10.0.0 - Generates UUIDs.
 
