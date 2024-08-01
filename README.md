@@ -23,6 +23,7 @@
 - <img src="./readme/cors.png" width="25" style="top: 8px" /> cors @ 2.8.5 - Middleware for enabling CORS in Express.
 - <img src="./readme/dotenv.png" width="25" style="top: 8px" /> dotenv @ 16.4.5 - Zero-dependency module for loading environment variables.
 - <img src="./readme/express.png" width="25" style="top: 8px" /> express @ 4.19.2 - Web framework for Node.js.
+- <img src="./readme/jsonwebtoken.png" width="25" style="top: 8px" /> jsonwebtoken @ 9.0.2 - Library for generating JWTs.
 - <img src="./readme/prisma.png" width="25" style="top: 8px" /> Prisma @ 5.16.2 - Next-generation ORM for Node.js and TypeScript.
 - <img src="./readme/MySql.png" width="25" style="top: 8px" /> MySQL @ 2.18.1 - MySQL client for Node.js.
 - <img src="./readme/Joi.png" width="25" style="top: 8px" /> Joi @ 17.13.3 - Data validation library for JavaScript.
